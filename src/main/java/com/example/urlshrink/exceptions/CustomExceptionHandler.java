@@ -36,6 +36,10 @@ public class CustomExceptionHandler {
                 errorMessage = "Not Found: " + ex.getMessage();
                 httpStatus = NOT_FOUND;
                 break;
+            case "UrlValidationException":
+                errorMessage = "Url is not valid: " + ex.getMessage();
+                httpStatus = BAD_REQUEST;
+                break;
             default:
                 httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
                 errorMessage = "Internal Server Error: " + ex.getMessage();
