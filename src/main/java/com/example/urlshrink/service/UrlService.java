@@ -21,10 +21,12 @@ public class UrlService {
     }
 
     public String createUrl(String original) {
+        original = fixHttpsPrefixIfMissing(original);
+
         if (!isUrlValid(original)) {
             throw new InvalidIdException(String.format("Given URL %s is not valid!", original));
         }
-
+        
         if(urlRepository.existsByOriginalUrl(original)) {
             throw new DuplicateKeyErrorException(String.format("The Url %s already exists. Please try another one.", original));
         }
@@ -40,17 +42,22 @@ public class UrlService {
         if(url == null) {
             throw new UrlNotFoundException(String.format("Url %s not found", shortenedUrl));
         }
+
         return url.getOriginalUrl();
     }
 
-    private boolean isUrlValid(String url) {
-        String myUrl = url;
-        String beginWithHttpRegex = "^(https?://).*$";
-        if(!url.matches(beginWithHttpRegex)) {
-            myUrl = "https://" + url;
+    public String incrementClickCount(String shortenedUrl) {
+        Url url = urlRepository.findByShortenedUrl(shortenedUrl);
+        if(url == null) {
+            throw new UrlNotFoundException(String.format("Url %s not found", shortenedUrl));
         }
-        return new UrlValidator().isValid(myUrl);
+        // increment clickCount
+        url.setClickCount(url.getClickCount()+1);
+        urlRepository.save(url);
+
+        return url.getOriginalUrl();
     }
+
 
     private String createUniqueURL() {
        String shortenedUrl = "";
@@ -58,5 +65,21 @@ public class UrlService {
            shortenedUrl = UUID.randomUUID().toString().substring(0, 5);
        } while(urlRepository.existsByShortenedUrl(shortenedUrl));
         return shortenedUrl;
+    }
+
+    private boolean isUrlValid(String originalUrl) {
+        return new UrlValidator().isValid(originalUrl);
+    }
+
+    private boolean isHttpsMissing(String originalUrl) {
+        String beginWithHttpRegex = "^(https?://).*$";
+        return !originalUrl.matches(beginWithHttpRegex);
+    }
+
+    private String fixHttpsPrefixIfMissing(String originalUrl) {
+        if (isHttpsMissing(originalUrl)) {
+            return "https://" + originalUrl;
+        }
+        return originalUrl;
     }
 }
