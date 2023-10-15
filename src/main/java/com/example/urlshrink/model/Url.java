@@ -9,6 +9,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Document(collection = "urls")
@@ -33,9 +35,14 @@ public class Url {
     @LastModifiedDate
     private Date lastModified;
 
+    private LocalDateTime timestamp;
+
+    private Date expireDate;
+
     public Url(String original, String shortened, int clickCount) {
         this.originalUrl = original;
         this.shortenedUrl = shortened;
         this.clickCount = clickCount;
+        this.expireDate = Date.from(LocalDateTime.now().plusWeeks(1).atZone(ZoneId.systemDefault()).toInstant());
     }
 }
