@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import java.time.Clock;
+import java.time.ZoneId;
+
 
 @Configuration
 public class ApplicationConfiguration extends AbstractMongoClientConfiguration {
@@ -32,6 +35,11 @@ public class ApplicationConfiguration extends AbstractMongoClientConfiguration {
     @Bean
     public MongoTemplate mongoTemplate() throws Exception {
         return new MongoTemplate(mongoClient(), mongoDBName);
+    }
+
+    @Bean
+    public Clock clock() {
+        return Clock.system(ZoneId.of("Europe/Berlin"));
     }
 
     @Override
