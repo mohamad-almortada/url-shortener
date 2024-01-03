@@ -23,7 +23,7 @@ import java.util.UUID;
 @Service
 public class UrlService {
 
-    private UrlRepository urlRepository;
+    private final UrlRepository urlRepository;
     private final Clock clock;
     private final MongoTemplate mongoTemplate;
     private static final Logger logger = LoggerFactory.getLogger(UrlService.class);

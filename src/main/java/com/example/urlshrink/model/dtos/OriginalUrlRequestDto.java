@@ -1,4 +1,4 @@
-package com.example.urlshrink.model;
+package com.example.urlshrink.model.dtos;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

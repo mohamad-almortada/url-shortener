@@ -33,9 +33,15 @@ public class CustomExceptionHandler {
                 httpStatus = BAD_REQUEST;
                 break;
             case "UrlNotFoundException":
-                errorMessage = "Not Found: " + ex.getMessage();
+                errorMessage = "Url not Found: " + ex.getMessage();
                 httpStatus = NOT_FOUND;
                 break;
+
+            case "UserNotFoundException":
+                errorMessage = "User not Found: " + ex.getMessage();
+                httpStatus = NOT_FOUND;
+                break;
+
             case "UrlValidationException":
                 errorMessage = "Url is not valid: " + ex.getMessage();
                 httpStatus = BAD_REQUEST;

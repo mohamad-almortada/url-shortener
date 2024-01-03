@@ -1,7 +1,7 @@
 package com.example.urlshrink.controller;
 
-import com.example.urlshrink.model.OriginalUrlRequestDto;
-import com.example.urlshrink.model.UpdateUrlDto;
+import com.example.urlshrink.model.dtos.OriginalUrlRequestDto;
+import com.example.urlshrink.model.dtos.UpdateUrlDto;
 import com.example.urlshrink.service.UrlService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Validated
 @RequestMapping("/api/v1/")
 public class UrlController {
-    private UrlService urlService;
+    private final UrlService urlService;
 
     public UrlController(UrlService urlService) {
         this.urlService = urlService;
